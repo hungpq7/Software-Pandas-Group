@@ -9,4 +9,4 @@ def plot_candlestick(ticker, df):
         low=df['AAPL.Low'],
         close=df['AAPL.Close'])]
     )
-    fig.show()
+    return fig
