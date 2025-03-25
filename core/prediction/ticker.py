@@ -1,8 +1,8 @@
 TICKERS = (
-    'ACB', 'BID', 'CTG', 'HDB', 'HPG',
-    'KDH', 'MBB', 'MSC', 'NVL', 'PNJ',
-    'PDR', 'POW', 'SAB', 'SSI', 'STB',
-    'TCB', 'TCH', 'TPB', 'VIB', 'VCB',
-    'VHM', 'VNM', 'VPB', 'VRE', 'FPT',
-    'GAS', 'VJC', 'DOF', 'TGP', 'CTD'
+    'ACB', 'BCM', 'BID', 'BVH', 'CTG',
+    'FPT', 'GAS', 'GVR', 'HDB', 'HPG',
+    'LPB', 'MBB', 'MSN', 'MWG', 'PLX',
+    'SAB', 'SHB', 'SSB', 'SSI', 'STB',
+    'TCB', 'TPB', 'VCB', 'VHM', 'VIB',
+    'VIC', 'VJC', 'VNM', 'VPB', 'VRE',
 )
