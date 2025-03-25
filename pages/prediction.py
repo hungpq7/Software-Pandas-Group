@@ -5,12 +5,11 @@ from core.prediction.plot import plot_candlestick
 from core.prediction.ticker import TICKERS
 
 df = init_data()
-
 if st.button('Ingest data'):
     df = ingest_data()
 
 ticker = st.selectbox('Ticker', options=TICKERS)
 
 if st.button('Plot candlestick'):
-    fig = plot_candlestick()
+    fig = plot_candlestick(df, ticker)
     st.plotly_chart(fig)

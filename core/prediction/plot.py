@@ -1,7 +1,7 @@
 import plotly.graph_objects as go
 import pandas as pd
 
-def plot_candlestick(ticker, df):
+def plot_candlestick(df, ticker):
     fig = go.Figure(
         data=[go.Candlestick(x=df['Date'],
         open=df['AAPL.Open'],
