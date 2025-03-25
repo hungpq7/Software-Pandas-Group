@@ -1,8 +1,8 @@
 import streamlit as st
 
-from src.prediction.data import ingest_data, init_data
-from src.prediction.plot import plot_candlestick
-from src.prediction.ticker import TICKERS
+from ..prediction.data import ingest_data, init_data
+from ..prediction.plot import plot_candlestick
+from ..prediction.ticker import TICKERS
 
 df = init_data()
 
