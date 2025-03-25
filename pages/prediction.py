@@ -4,6 +4,8 @@ from core.prediction.data import ingest_data, init_data
 from core.prediction.plot import plot_candlestick
 from core.prediction.ticker import TICKERS
 
+st.title('Stock Return Prediction')
+
 df = init_data()
 if st.button('Ingest data'):
     df = ingest_data()
