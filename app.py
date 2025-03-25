@@ -1,11 +1,7 @@
 import streamlit as st
 
-st.title('Stock')
+page_predition = st.Page('pages/prediction.py', title='Stock Return Prediction')
+page_chatbot = st.Page('pages/chatbot.py', title='Investment Buddy')
 
-
-pg = st.navigation([
-    st.Page("pages/prediction.py"),
-    st.Page("pages/chatbot.py")
-])
+pg = st.navigation([page_predition, page_chatbot])
 pg.run()
-
