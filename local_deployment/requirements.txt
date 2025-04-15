@@ -1,0 +1,23 @@
+# for QA interaction
+pandas>=1.5.0
+langchain>=0.0.200
+langchain-openai>=0.0.2
+langchain-experimental>=0.0.47
+langchain-community>=0.0.10
+openai>=1.0.0
+python-dotenv>=0.19.0
+flask>=2.0.0
+google-generativeai>=0.3.0
+langchain-google-genai>=0.0.5 
+
+# for training
+scipy
+numpy
+pandas
+seaborn
+matplotlib
+tensorflow
+
+
+# QA system 
+tabulate

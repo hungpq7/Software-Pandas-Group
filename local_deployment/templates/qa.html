@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Data QA System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-bar {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-bar a {
+            text-decoration: none;
+            color: #1877f2;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .nav-bar a:hover {
+            background-color: #f0f2f5;
+        }
+        .main-container {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px);
+        }
+        .chat-container {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background-color: #1877f2;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .bot-message {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .message-time {
+            font-size: 0.75rem;
+            color: #65676b;
+            margin-top: 4px;
+            text-align: right;
+        }
+        .input-container {
+            padding: 20px;
+            background-color: #ffffff;
+            border-top: 1px solid #e4e6eb;
+            display: flex;
+            gap: 10px;
+        }
+        .input-container input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e4e6eb;
+            border-radius: 20px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-container input:focus {
+            border-color: #1877f2;
+        }
+        .input-container button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .input-container button:hover {
+            background-color: #166fe5;
+        }
+        .clear-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .clear-button:hover {
+            background-color: #c82333;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+            background-color: #f0f2f5;
+            border-radius: 12px;
+            align-self: flex-start;
+            margin-bottom: 15px;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background-color: #65676b;
+            border-radius: 50%;
+            animation: typing 1s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <h1 style="margin: 0; font-size: 1.5rem; color: #1c1e21;">Stock Data QA System</h1>
+        <div>
+            <a href="{{ url_for('index') }}">Back to Data Manager</a>
+            <form method="POST" action="{{ url_for('qa') }}" style="display: inline;">
+                <input type="hidden" name="clear_history" value="true">
+                <button type="submit" class="clear-button">Clear Chat</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                {% for entry in conversation_history %}
+                <div class="message user-message">
+                    {{ entry.question }}
+                    <div class="message-time">You</div>
+                </div>
+                <div class="message bot-message">
+                    {{ entry.answer }}
+                    <div class="message-time">System</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="input-container">
+                <form method="POST" style="display: flex; width: 100%; gap: 10px;">
+                    <input type="text" name="question" placeholder="Ask a question about the stock data..." required autofocus>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-scroll to bottom of chat container
+        function scrollToBottom() {
+            var chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // Scroll on page load
+        window.onload = scrollToBottom;
+
+        // Scroll after new message is added
+        document.querySelector('form').addEventListener('submit', function() {
+            setTimeout(scrollToBottom, 100);
+        });
+    </script>
+</body>
+</html> 
