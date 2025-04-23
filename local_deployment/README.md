@@ -12,13 +12,13 @@ Key features include:
 
 
 ## Running
-run the web_app.py to start the app
+run the app.py to start the app
 
 ## Structure
 
 inv_project/
 ├── README.md
-├── web_app.py              # main app to run
+├── app.py              # main app to run
 ├── smartinvest/            # logic and processing
 │   └── __init__.py
 │       ├── datadriver/     # data processing

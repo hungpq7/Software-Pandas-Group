@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from smartinvest import DataDriver
-from smartinvest.interactor.stock_qa import StockQASystem
+from smartinvest import DataDriver, StockQASystem, StockPlotter
 import os
 from datetime import datetime, timedelta
 
@@ -57,6 +56,7 @@ def index():
     download_message = None
     refresh_message = None
     current_year = datetime.now().year
+    chart_image = None
     
     if request.method == 'POST':
         action = request.form.get('action')
@@ -118,16 +118,34 @@ def index():
                                     current_year=current_year)
             else:
                 refresh_message = "Data is up to date (less than 2 days old)"
-    else:
-        # Only show refresh message on GET request if it's from the refresh route
-        refresh_message = request.args.get('refresh_message')
+                
+        elif action == 'plot_stock':
+            stock_id = request.form.get('stock_id', '').strip().upper()
+            if not stock_id:
+                download_message = "Please enter a stock ID"
+            else:
+                try:
+                    # Get stock data
+                    df = data_driver.get_stock_data(stock_id)
+                    if df is None or df.empty:
+                        download_message = f"No data available for {stock_id}"
+                    else:
+                        # Use StockPlotter to generate the chart
+                        chart_image = StockPlotter.plot_stock_data(df, stock_id)
+                        if chart_image:
+                            download_message = f"Successfully plotted {stock_id}"
+                        else:
+                            download_message = f"Error generating plot for {stock_id}"
+                except Exception as e:
+                    download_message = f"Error plotting data: {str(e)}"
     
     return render_template('index.html', 
                          result=result, 
                          result_type=result_type,
                          download_message=download_message,
                          refresh_message=refresh_message,
-                         current_year=current_year)
+                         current_year=current_year,
+                         chart_image=chart_image)
 
 @app.route('/refresh', methods=['GET'])
 def refresh():

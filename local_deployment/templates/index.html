@@ -98,6 +98,17 @@
             gap: 10px;
             align-items: center;
         }
+        .chart-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
     {% if is_refreshing %}
     <script>
@@ -134,6 +145,7 @@
                 <input type="text" name="stock_id" placeholder="Enter stock ID (e.g., AAPL)">
                 <input type="number" name="year" placeholder="Year" min="2000" max="2100" value="{{ current_year }}">
                 <button type="submit" name="action" value="download_stock">Download Stock Data</button>
+                <button type="submit" name="action" value="plot_stock" style="background-color: #28a745; color: white;">Plot Stock</button>
             </div>
         </div>
         
@@ -165,6 +177,13 @@
     {% if refresh_message %}
     <div class="message {% if 'successfully' in refresh_message.lower() %}success{% elif 'error' in refresh_message.lower() %}error{% elif 'up to date' in refresh_message.lower() %}info{% else %}warning{% endif %}">
         {{ refresh_message }}
+    </div>
+    {% endif %}
+
+    {% if chart_image %}
+    <div class="chart-container">
+        <h2>Stock Price Chart</h2>
+        <img src="data:image/png;base64,{{ chart_image }}" alt="Stock Price Chart">
     </div>
     {% endif %}
 </body>

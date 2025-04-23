@@ -21,3 +21,10 @@ tensorflow
 
 # QA system 
 tabulate
+
+# For data loading
+vnstock
+beautifulsoup4
+
+# For training model 
+skimage

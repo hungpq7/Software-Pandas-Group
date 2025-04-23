@@ -55,17 +55,18 @@ class StockQASystem:
             # Initialize the language model
             if self.model_type == "openai":
                 self.llm = ChatOpenAI(temperature=0)
+                self.agent_type = AgentType.OPENAI_FUNCTIONS
             else:  # default to gemini
                 self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0)
-            
+                self.agent_type = AgentType.ZERO_SHOT_REACT_DESCRIPTION
             # Create the agent with security settings
             self.agent = create_pandas_dataframe_agent(
                 self.llm,
                 self.price_data,
                 verbose=True,
-                agent_type=AgentType.OPENAI_FUNCTIONS,
+                agent_type=self.agent_type,
                 allow_dangerous_code=True,  # Required for pandas operations
-                max_iterations=3,  # Limit the number of iterations
+                max_iterations=30,  # Limit the number of iterations
                 handle_parsing_errors=True,  # Handle parsing errors gracefully
             )
             
