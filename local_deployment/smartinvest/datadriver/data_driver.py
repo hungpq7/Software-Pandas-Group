@@ -156,6 +156,9 @@ class DataDriver:
                 self.metadata['last_day'].year + 1
             )
             return read_stocks_years(stocks, self.data_folder, years=years)
+        
+    def read_stocks_years(self, stocks, years):
+        return read_stocks_years(stocks, self.data_folder, years=years)
 
     def download_database(self, stocks, year=None, force_replace=False):
         """

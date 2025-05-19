@@ -12,10 +12,18 @@ Key features include:
 
 
 ## Running
+Install the dependencies
+```
+pip install -r requirements.txt
+```
 run the app.py to start the app
+```
+python app.py
+```
+
 
 ## Structure
-
+```
 inv_project/
 ├── README.md
 ├── app.py              # main app to run
@@ -30,3 +38,4 @@ inv_project/
 │   └── qa.html             # QA page
 ├── requirements.txt
 └── .gitignore
+```

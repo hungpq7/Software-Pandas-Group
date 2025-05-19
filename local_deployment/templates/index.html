@@ -109,6 +109,36 @@
             max-width: 100%;
             height: auto;
         }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .prediction-button {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .prediction-button:hover {
+            background-color: #138496;
+        }
     </style>
     {% if is_refreshing %}
     <script>
@@ -151,17 +181,27 @@
         
         <div class="form-group">
             <button type="submit" name="action" value="refresh_data" style="background-color: #ffc107;">Refresh Data</button>
+            <button type="submit" name="action" value="get_prediction" class="prediction-button">Get Predictions</button>
         </div>
     </form>
 
     {% if result %}
-    <div class="message {% if result_type == 'stocks' %}info{% else %}info{% endif %}">
+    <div class="message {% if result_type == 'stocks' %}info{% elif result_type == 'prediction' %}info{% else %}info{% endif %}">
         {% if result_type == 'stocks' %}
         <div class="stocks-list">
             {% for stock in result.split('\n') %}
             <div class="stock-item">{{ stock }}</div>
             {% endfor %}
         </div>
+        {% elif result_type == 'prediction' %}
+        {% if prediction_chart %}
+        <div class="chart-container">
+            <h2>Top 10 Buy-Sell Predictions</h2>
+            <img src="data:image/png;base64,{{ prediction_chart }}" alt="Prediction Chart">
+        </div>
+        {% endif %}
+        <h2>Full Stock Predictions</h2>
+        {{ result | safe }}
         {% else %}
         <pre>{{ result }}</pre>
         {% endif %}

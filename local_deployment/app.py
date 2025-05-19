@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
-from smartinvest import DataDriver, StockQASystem, StockPlotter
+from smartinvest import DataDriver, StockQASystem, StockPlotter, Predictor
 import os
 from datetime import datetime, timedelta
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -12,6 +13,9 @@ data_driver = DataDriver(data_folder=data_folder)
 
 # Initialize QA System
 qa_system = None
+
+# Initialize Predictor
+predictor = Predictor(data_driver, model_path='smartinvest/model/exp_1.4_20250518.keras')
 
 def initialize_qa_system():
     """
@@ -57,11 +61,22 @@ def index():
     refresh_message = None
     current_year = datetime.now().year
     chart_image = None
+    prediction_results = None
+    prediction_chart = None
     
     if request.method == 'POST':
         action = request.form.get('action')
         
-        if action == 'check_stocks':
+        if action == 'get_prediction':
+            try:
+                prediction_results = predictor.get_prediction()
+                prediction_chart = predictor.plot_predictions(prediction_results)
+                result = prediction_results.to_html(classes='table table-striped', index=False)
+                result_type = 'prediction'
+            except Exception as e:
+                download_message = f"Error getting predictions: {str(e)}"
+        
+        elif action == 'check_stocks':
             stocks = data_driver.get_available_stocks()
             result = '\n'.join(stocks)
             result_type = 'stocks'
@@ -145,7 +160,8 @@ def index():
                          download_message=download_message,
                          refresh_message=refresh_message,
                          current_year=current_year,
-                         chart_image=chart_image)
+                         chart_image=chart_image,
+                         prediction_chart=prediction_chart)
 
 @app.route('/refresh', methods=['GET'])
 def refresh():

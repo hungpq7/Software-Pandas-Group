@@ -10,6 +10,8 @@ flask>=2.0.0
 google-generativeai>=0.3.0
 langchain-google-genai>=0.0.5 
 
+langgraph
+
 # for training
 scipy
 numpy
@@ -17,6 +19,7 @@ pandas
 seaborn
 matplotlib
 tensorflow
+IPython
 
 
 # QA system 
@@ -27,4 +30,6 @@ vnstock
 beautifulsoup4
 
 # For training model 
-skimage
+scikit-image
+
+langchain_google_genai
